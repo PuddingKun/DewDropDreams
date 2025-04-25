@@ -139,8 +139,8 @@
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.6);
-  justify-content: center;   /* Centers the modal horizontally */
-  align-items: center;       /* Centers the modal vertically */
+  justify-content: center;  
+  align-items: center;      
   padding: 20px;
   animation: fadeIn 0.3s ease forwards;
 }
@@ -283,7 +283,7 @@
   }
 }
 
-/* Fix nav for larger screens */
+
 @media (min-width: 769px) {
   .nav-links {
     display: flex !important;
@@ -354,13 +354,13 @@
 
       <div class="product-card">
         <img src="images/posts/bt3.jpg" alt="Product Image">
-        <div class="product-name">Laminated Tags Horimiya (2pcs)</div>
+        <div class="product-name">Laminated Tags Sign of affection(2pcs)</div>
         <div class="product-price">₹30</div>
       </div>
 
       <div class="product-card">
         <img src="images/posts/bt4.jpg" alt="Product Image">
-        <div class="product-name">Laminated Tags Sign of affection (2pcs)</div>
+        <div class="product-name">Loving Yamada Kun Lv.999 (2pcs)</div>
         <div class="product-price">₹30</div>
       </div>
 
@@ -438,7 +438,7 @@
       
   </div>
 
-  <!-- Modal Template -->
+ 
 <div class="modal" id="productModal">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -514,10 +514,10 @@ function buyNow() {
       image: image
     };
 
-    // Set cart to contain only this item (acts like instant checkout)
+   
     localStorage.setItem('cart', JSON.stringify([cartItem]));
 
-    // Redirect to cart page
+ 
     window.location.href = 'cart.htm';
   }
 </script>
