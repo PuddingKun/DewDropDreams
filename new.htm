@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet" />
+  <title>New Arrivals - Dewdrop Dreams</title>
+  <style>
+    body {
+      margin: 0;
+      width: 100vw;
+      overflow-x: hidden;
+      background-color: #d0e6e6;
+      color: #333;
+    }
+    .navbar {
+  background-color: #fdd0cc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: 'Quicksand', sans-serif;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  color: #fff;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+#menu-toggle {
+  display: none;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    background-color: #fdd0cc;
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  #menu-toggle:checked + .hamburger + .nav-links {
+    display: flex;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+
+/* Desktop Styles */
+@media (min-width: 769px) {
+  .nav-links {
+    display: flex !important;
+    position: static;
+    flex-direction: row;
+    gap: 20px;
+    padding: 0;
+  }
+
+  .hamburger {
+    display: none;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+    .product-container {
+      display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+    }
+    .product-card {
+      background-color: #fff0f5;
+      padding: 1rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+    .product-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .product-name {
+      margin: 1rem 0 0.5rem;
+      font-size: 1.1rem;
+      color: #e07d9c;
+    }
+    .product-price {
+      font-size: 1rem;
+      color: #333;
+    }
+    .modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;   /* Centers the modal horizontally */
+  align-items: center;       /* Centers the modal vertically */
+  padding: 20px;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.modal.show {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #fdfdfd, #fce9ec);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  animation: slideUp 0.4s ease forwards;
+}
+
+@keyframes slideUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95vw;
+    padding: 1.2rem;
+  }
+}
+
+
+.modal-content img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h2 {
+  font-family: 'Quicksand', sans-serif;
+  color: #d46a88;
+  font-size: 1.5rem;
+}
+
+.modal-content p {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.modal-content input[type="number"] {
+  width: 80px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 25px;
+  background: #fce9ec;
+  color: #d46a88;
+  text-align: center;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
+  transition: 0.2s ease;
+  outline: none;
+}
+
+.modal-content input[type="number"]::-webkit-inner-spin-button,
+.modal-content input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.modal-content input[type="number"]:focus {
+  background: #fff0f5;
+  box-shadow: 0 0 0 2px #e297af44;
+}
+
+.modal-content button {
+  margin: 0.5rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  background: #e297af;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.modal-content button:hover {
+  background: #d46a88;
+  transform: scale(1.05);
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  font-size: 1.8rem;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.modal-close:hover {
+  color: #d46a88;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: #fdd0cc;
+    flex-direction: column;
+    align-items: center;
+    display: none;
+    gap: 15px;
+    padding: 10px 0;
+  }
+
+  #menu-toggle:checked + .hamburger + .nav-links {
+    display: flex;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+
+/* Fix nav for larger screens */
+@media (min-width: 769px) {
+  .nav-links {
+    display: flex !important;
+    position: static;
+    flex-direction: row;
+    gap: 20px;
+    padding: 0;
+  }
+
+  #menu-toggle {
+    display: none;
+  }
+
+  .hamburger {
+    display: none;
+  }
+}
+
+
+  .modal-content h2 {
+    font-size: 1.3rem;
+  }
+
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  margin: 30px auto;
+  font-family: 'Quicksand', sans-serif;
+  color: #e297af;
+}
+
+
+
+
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">Dewdrop Dreams</div>
+    <input type="checkbox" id="menu-toggle" />
+    <label for="menu-toggle" class="hamburger">&#9776;</label>
+    <ul class="nav-links">
+      <li><a href="new.htm">New</a></li>
+      <li><a href="bestsellers.htm">Best Sellers</a></li>
+      <li><a href="sale.htm">Sale</a></li>
+      <li><a href="Gift.htm">Gift Ideas</a></li>
+      <li><a href="index.htm">Home</a></li>
+      <li><a href="cart.htm" class="cart-link">🛒 <span id="cart-count">0</span></a></li>
+    </ul>
+  </nav>
+  
+  <h2 class="section-title">New Arrival</h2>
+
+  <div class="product-container">
+
+    <div class="product-card">
+      <img src="images/posts/bt1.jpg" alt="Product Image">
+      <div class="product-name">Laminated Tags Yamada Kun (2pcs)</div>
+      <div class="product-price">₹30</div>
+    </div>
+
+    <div class="product-card">
+        <img src="images/posts/bt2.jpg" alt="Product Image">
+        <div class="product-name">Laminated Tags Horimiya (2pcs)</div>
+        <div class="product-price">₹30</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/posts/bt3.jpg" alt="Product Image">
+        <div class="product-name">Laminated Tags Horimiya (2pcs)</div>
+        <div class="product-price">₹30</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/posts/bt4.jpg" alt="Product Image">
+        <div class="product-name">Laminated Tags Sign of affection (2pcs)</div>
+        <div class="product-price">₹30</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/posts/TB1.jpg" alt="Product Image">
+        <div class="product-name">Tote Bag</div>
+        <div class="product-price">₹120</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/posts/TB2.jpg" alt="Product Image">
+        <div class="product-name">Tote Bag</div>
+        <div class="product-price">₹120</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/posts/TB3.jpg" alt="Product Image">
+        <div class="product-name">Tote Bag</div>
+        <div class="product-price">₹120</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/posts/TB4.jpg" alt="Product Image">
+        <div class="product-name">Tote Bag</div>
+        <div class="product-price">₹120</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/posts/TB5.jpg" alt="Product Image">
+        <div class="product-name">Tote Bag</div>
+        <div class="product-price">₹120</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/posts/TB6.jpg" alt="Product Image">
+        <div class="product-name">Tote Bag</div>
+        <div class="product-price">₹120</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/posts/TB7.jpg" alt="Product Image">
+        <div class="product-name">Tote Bag</div>
+        <div class="product-price">₹120</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/posts/TB8.jpg" alt="Product Image">
+        <div class="product-name">Tote Bag</div>
+        <div class="product-price">₹120</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/posts/TB9.jpg" alt="Product Image">
+        <div class="product-name">Tote Bag</div>
+        <div class="product-price">₹120</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/posts/TB10.jpg" alt="Product Image">
+        <div class="product-name">Tote Bag</div>
+        <div class="product-price">₹120</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/candles2.jpg" alt="Product Image">
+        <div class="product-name">Scented Candles Small (1pcs)</div>
+        <div class="product-price">₹69</div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/Snapchat-1885154319.jpg" alt="Product Image">
+        <div class="product-name">Scented Candles Medium (1pcs)</div>
+        <div class="product-price">₹149</div>
+      </div>
+      
+  </div>
+
+  <!-- Modal Template -->
+<div class="modal" id="productModal">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <img id="modalImage" src="" alt="Product Image">
+    <h2 id="modalName"></h2>
+    <p id="modalPrice"></p>
+    <label for="quantity">Qty:</label>
+    <input type="number" id="quantity" min="1" value="1">
+    <div>
+      <button onclick="addToCart()">Add to Cart</button>
+      <button onclick="buyNow()">Buy Now</button>
+      
+    </div>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('productModal');
+  const modalImg = document.getElementById('modalImage');
+  const modalName = document.getElementById('modalName');
+  const modalPrice = document.getElementById('modalPrice');
+
+  document.querySelectorAll('.product-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const img = card.querySelector('img').src;
+      const name = card.querySelector('.product-name').textContent;
+      const price = card.querySelector('.product-price').textContent;
+
+      modalImg.src = img;
+      modalName.textContent = name;
+      modalPrice.textContent = price;
+
+      modal.classList.add('show');
+
+    });
+  });
+
+  function closeModal() {
+    modal.classList.remove('show');
+
+  }
+
+  function addToCart() {
+  const quantity = parseInt(document.getElementById('quantity').value);
+  const name = document.getElementById('modalName').textContent;
+  const price = document.getElementById('modalPrice').textContent.replace('₹', '').trim();
+  const image = document.getElementById('modalImage').src;
+
+  const cartItem = {
+    name: name,
+    price: parseFloat(price),
+    quantity: quantity,
+    image: image
+  };
+
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  cart.push(cartItem);
+  localStorage.setItem('cart', JSON.stringify(cart));
+
+  alert(`Added ${quantity} item(s) to cart.`);
+  closeModal();
+};
+function buyNow() {
+    const quantity = parseInt(document.getElementById('quantity').value);
+    const name = document.getElementById('modalName').textContent;
+    const price = document.getElementById('modalPrice').textContent.replace('₹', '').trim();
+    const image = document.getElementById('modalImage').src;
+
+    const cartItem = {
+      name: name,
+      price: parseFloat(price),
+      quantity: quantity,
+      image: image
+    };
+
+    // Set cart to contain only this item (acts like instant checkout)
+    localStorage.setItem('cart', JSON.stringify([cartItem]));
+
+    // Redirect to cart page
+    window.location.href = 'cart.htm';
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us - Dewdrop Dreams</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Quicksand&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to right, #ffe4ec, #fff0f5);
+      color: #333;
+    }
+
+    .navbar {
+  background-color: #fdd0cc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+#menu-toggle {
+  display: none;
+}
+
+.cart-link {
+  position: relative;
+}
+
+#cart-count {
+  background: #e297af;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  color: white;
+  position: absolute;
+  top: -8px;
+  right: -12px;
+}
+
+
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: #fdd0cc;
+    flex-direction: column;
+    align-items: center;
+    display: none;
+    gap: 15px;
+    padding: 10px 0;
+  }
+
+  #menu-toggle:checked + .hamburger + .nav-links {
+    display: flex;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+
+    .container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      color: #b06f9d;
+      margin-bottom: 10px;
+    }
+
+    p {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    input, textarea {
+      padding: 12px 16px;
+      font-size: 1rem;
+      border: 2px solid #f8c8dc;
+      border-radius: 10px;
+      transition: border 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #d880b0;
+      outline: none;
+    }
+
+    button {
+      background: #b06f9d;
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #9d5b88;
+    }
+
+    .contact-details {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.8;
+    }
+
+    .contact-details strong {
+      color: #b06f9d;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 30px 20px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+        <nav class="navbar">
+                <div class="logo">Dewdrop Dreams</div>
+                <input type="checkbox" id="menu-toggle" />
+                <label for="menu-toggle" class="hamburger">&#9776;</label>
+                <ul class="nav-links">
+                  <li><a href="new.htm">New</a></li>
+                  <li><a href="bestsellers.htm">Best Sellers</a></li>
+                  <li><a href="sale.html">Sale</a></li>
+                  <li><a href="Gift.htm">Gift Ideas</a></li>
+                  <li><a href="index.htm">Home</a></li>
+                  <li><a href="cart.htm" class="cart-link">🛒 <span id="cart-count">0</span></a></li>
+                </ul>
+              </nav>
+  <div class="container">
+    <h1>Contact Us</h1>
+    <p>Have a question, suggestion, or just want to say hi? We'd love to hear from you!</p>
+    <form action="https://formspree.io/f/xpwdwagg" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="Instagram" rows="5" placeholder="Your Instagram" required></textarea>
+      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+
+    <div class="contact-details">
+      📧 <strong>Email:</strong> Clementinebeckket@gmail.com<br/>
+      📞 <strong>Phone 1:</strong> +91 8100598198 (Sudiksha Pradhan)<br/>
+      📞 <strong>Phone 2:</strong> +91 7439797794 (Shreedeep Patra)<br/>
+      💬 <strong>WhatsApp:</strong> +91 8100598198 (Sudiksha Pradhan)<br/>
+      📱<strong>Instagram:</strong> dewdropdreams.studios<br/>
+      🏠 <strong>Warehouse:</strong> Bishab Apartments, Tollygung, Kabardanga, Gas Godaun, Kolkata 700104<br/>
+      🌍 Kolkata, West Bengal 700104, India
+    </div>
+  </div>
+</body>
+</html>
