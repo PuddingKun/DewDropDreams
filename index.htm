@@ -1,303 +1,342 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="images/Logo.png" type="image/png" />
-   <title>DewdropDreams Studios</title>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet" />
+  <title>Dewdrop Dreams Studios</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --pink: #fbd6dc;
+      --blue: #b6d8d6;
+      --cream: #fffaf7;
+      --soft-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      --primary-font: 'Nunito', sans-serif;
+      --logo-font: 'Pacifico', cursive;
+    }
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: var(--primary-font);
     }
-
     body {
-      font-family: 'Quicksand', sans-serif;
-      background-color: #fffaf6;
+      background-color: var(--cream);
       color: #333;
-      overflow-x: hidden;
     }
-
     header {
-      background-color: #d5e3e6;
-      padding: 10px;
-      text-align: center;
-      font-size: 14px;
-      color: #444;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1rem;
+      box-shadow: var(--soft-shadow);
+      flex-wrap: wrap;
     }
-
     .logo {
-      font-family: 'Pacifico', cursive;
-      font-size: 32px;
-      color: #f89aaa;
-      margin: 10px 0;
+      font-family: var(--logo-font);
+      font-size: 1.5rem;
+      color: #e88aa6;
+      flex: 1 1 100%;
       text-align: center;
+      margin-bottom: 0.5rem;
     }
-
     nav {
-      background-color: #fdd0cc;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+    }
+    nav a {
+      margin: 0 0.5rem;
+      text-decoration: none;
+      color: #444;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      color: #e88aa6;
+    }
+    .hero {
+      background: url('images/home.png') center/cover no-repeat;
+      height: 70vh;
       display: flex;
       justify-content: center;
-      gap: 20px;
-      padding: 10px 0;
-      font-weight: bold;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #fff;
-      font-size: 16px;
-    }
-
-    .hero {
-      background: url('images/Untitled\ design.png') no-repeat center center/cover;
-      padding: 80px 20px;
+      align-items: center;
+      flex-direction: column;
+      color: white;
+      text-shadow: 0 0 10px #000;
       text-align: center;
+      padding: 2rem;
     }
-
     .hero h1 {
-      font-size: 48px;
-      color: #f48b8b;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
     }
-
-    .hero p {
-      color: #e39283;
-      font-size: 18px;
-      margin-top: 10px;
-    }
-
     .hero button {
-      margin-top: 20px;
-      padding: 10px 30px;
-      background-color: #fdb0a2;
-      border: none;
-      color: #fff;
-      font-size: 16px;
-      border-radius: 8px;
+      background: #fff;
+      color: #e88aa6;
+      border: 2px solid #e88aa6;
+      padding: 0.75rem 1.5rem;
+      border-radius: 25px;
       cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
     }
-
+    .hero button:hover {
+      background: #e88aa6;
+      color: white;
+    }
     .categories {
       display: flex;
       justify-content: center;
-      gap: 15px;
-      padding: 40px 20px;
+      gap: 1rem;
+      background-color: var(--pink);
+      padding: 2rem;
       flex-wrap: wrap;
-      text-align: center;
     }
-
-    .categories div {
-      background-color: #fcd6da;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      min-width: 120px;
-      font-weight: bold;
-      color: #fff;
-      flex: 1 1 100px;
+    .category {
+      background: white;
+      padding: 1rem 2rem;
+      border-radius: 20px;
+      box-shadow: var(--soft-shadow);
+      transition: transform 0.2s;
+      cursor: pointer;
     }
-    .categories div:hover {
+    .category:hover {
       transform: translateY(-5px);
     }
-    .subscribe {
-      background-color: #b4d4d2;
-      text-align: center;
-      padding: 40px 20px;
-    }
-
-    .subscribe input {
-      padding: 10px;
-      margin-top: 10px;
-      width: 250px;
-      border-radius: 5px;
-      border: none;
-    }
-
-    .products {
+    .shop-section {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
       justify-content: center;
-      padding: 40px 20px;
-      transition: transform 0.2s;
+      padding: 2rem 1rem;
+      gap: 2rem;
+      background-color: var(--cream);
     }
-    .product-card:hover {
+    .product {
+      width: 200px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: var(--soft-shadow);
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .product:hover {
       transform: translateY(-5px);
     }
-
-    .product-card {
-      background: #fff;
+    .product img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      padding: 15px;
-      text-align: center;
-      width: 180px;
-      transition: transform 0.2s;
     }
-
-    .product-card img {
-      max-width: 100%;
-      border-radius: 8px;
-      transition: transform 0.2s;
+    .product p {
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+    .subscribe {
+      background-color: var(--blue);
+      padding: 3rem 1.5rem;
       text-align: center;
     }
-
-    .product-card h4 {
-      margin: 10px 0 5px;
-      font-size: 16px;
-      transition: transform 0.2s;
+    .subscribe h2 {
+      font-size: 2rem;
+      color: #d16b86;
     }
-
-    .product-card span {
-      color: #f48b8b;
-      font-weight: bold;
-      transition: transform 0.2s;
+    .subscribe p {
+      font-size: 1.1rem;
+      color: #444;
+      margin-bottom: 2rem;
     }
-
-    .brand-story {
-      background-color: #fff0f3;
-      padding: 60px 20px;
+    .subscribe input {
+      padding: 1rem;
+      border-radius: 20px;
+      border: 2px solid #e88aa6;
+      width: 90%;
+      max-width: 300px;
+      font-size: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .story {
+      position: relative;
+      padding: 4rem 1rem;
+      background-color: var(--pink);
       text-align: center;
     }
-
-    .brand-story h2 {
-      font-size: 32px;
-      color: #f89aaa;
-      margin-bottom: 20px;
+    .story .container {
+      max-width: 850px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 30px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
     }
-
-    .brand-story p {
-      font-size: 18px;
-      color: #666;
-      max-width: 700px;
-      margin: 0 auto;
-      line-height: 1.6;
+    .story h2 {
+      color: #d16b86;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
     }
-
+    .story p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #444;
+    }
+    .story img {
+      position: absolute;
+      bottom: -20px;
+      right: 30px;
+      width: 60px;
+      opacity: 0.3;
+    }
     footer {
-      background: #d5e3e6;
-      padding: 20px;
+      background-color: var(--blue);
+      padding: 1.5rem;
       text-align: center;
-      font-size: 14px;
+      font-size: 0.95rem;
     }
-
     @media (max-width: 600px) {
-      nav {
-        flex-wrap: wrap;
+      .hero h1 {
+        font-size: 2rem;
       }
-
-      .products {
-        flex-direction: column;
-        align-items: center;
+      .hero button {
+        padding: 0.6rem 1rem;
       }
-      
+      .category {
+        padding: 0.8rem 1.2rem;
+        font-size: 0.95rem;
+      }
+      .logo {
+        font-size: 1.2rem;
+      }
     }
-    .categories a {
+ 
+    .shop-button {
   display: inline-block;
-  padding: 15px 30px;
-  color: white; 
-  text-decoration: none; 
-  border-radius: 5px;
+  padding: 10px 25px;
+  background-color: white;               /* White background */
+  color: #d16b86;                        /* Pink text */
+  border: 2px solid #d16b86;             /* Pink border */
+  border-radius: 25px;                   /* Rounded corners */
+  text-decoration: none;                 /* Remove underline */
   font-weight: bold;
-  text-align: center;
-  transition: background-color 0.3s ease;
-  margin: 5px;
+  text-shadow: none;
+
+  font-size: 16px;
+  box-shadow: 0 0 8px #d16b86(214, 51, 132, 0.4); /* Pinkish glow shadow */
+  transition: 0.3s ease-in-out;
 }
-.product-card a {
-  text-decoration: none; 
-  color: black;           
-  display: block;        
+
+.shop-button:hover {
+        background-color: #f483bb;             /* Pink background on hover */
+  color: white;                          /* White text on hover */
+  box-shadow: 0 0 12px rgba(214, 51, 132, 0.6); /* Slight*/
+}
+.categories .category a {
+  text-decoration: none;   /* Removes underline */
+  color: #d16b86;          /* Optional: make links pink */
+  font-weight: bold;       /* Optional: make them stand out */
+}
+
+.categories .category a:hover {
+  text-decoration: none;   /* Prevent underline on hover */
+  color: #d16b86;          /* Optional: darker pink on hover */
+}
+.shop-section .product a {
+  text-decoration: none;   /* Removes underline from text */
+  color: black;            /* Or your preferred color */
+}
+
+.shop-section .product a:hover {
+  text-decoration: none;   /* Ensures no underline on hover */
+  color: #d63384;          /* Optional: pink on hover */
 }
 
 
   </style>
-  
 </head>
-
 <body>
-  <header>NEW OFFERS AVAILABLE WITH OUR FAIRY LIGHTS!!!</header>
-  <div class="logo">dewdropdreams.studios</div>
-  <nav>
-    <a href="new.htm">New In</a>
-    <a href="bestsellers.htm">Shop</a>
-    <a href="aboutus.htm">About</a>
-    <a href="sale.htm">Sale</a>
-    <a href="contact.htm">Contact</a>
-  </nav>
+  <header>
+    <div class="logo">dewdropdreams.studios</div>
+    <nav>
+      <a href="new.htm">New In</a>
+      <a href="Gift.htm">Shop</a>
+      <a href="aboutus.htm">About</a>
+      <a href="sale.htm">Sale</a>
+      <a href="contact.htm">Contact</a>
+    </nav>
+  </header>
 
   <section class="hero">
     <h1>New Arrivals</h1>
-    <p>just for you</p>
-    <a href="new.htm"><button>Shop Now</button></a>
+    <a href="Gift.htm" class="shop-button">Shop Now</a>
 
   </section>
 
   <section class="categories">
-    <div> <a href="new.htm"> New Arrivals </a></div>
-    <div><a href="bestsellers.htm">Shop</a></div>
-    <div><a href="sale.htm">Sale</a></div>
-    <div><a href="Gift.htm">Gift Ideas</a></div>
+    <div class="category"><a href="new.htm">New Arrivals</a></div>
+    <div class="category"><a href="Gift.htm">Handmade Gifts</a></div>
+    <div class="category"><a href="sale.htm">Sale</a></div>
+    <div class="category"><a href="bestsellers.htm">Bestsellers</a></div>
   </section>
-  
+
+  <section class="shop-section">
+    <div class="product">
+      <a href="bestsellers.htm">
+      <img src="images/polaroids.jpg" alt="Polaroids">
+      <p>Custom Polaroids<br><strong>Rs. 5.00 INR</strong></p>
+    </a>
+    </div>
+    <div class="product">
+      <a href="bestsellers.htm">
+      <img src="images/bookmark blue.jpg" alt="Bookmarks">
+      <p>Bookmarks<br><strong>Rs. 8.00 INR</strong></p>
+    </a>
+    </div>
+    <div class="product">
+      <a href="new.htm">
+      <img src="images/candles.jpg" alt="Candles">
+      <p>Scented Candles<br><strong>Rs. 70.00 INR</strong></p>
+    </a>
+    </div>
+    <div class="product">
+      <a href="Gift.htm">
+      <img src="images/fairylights.jpg" alt="Lights">
+      <p>Fairy Light Set<br><strong>Rs. 89.00 INR</strong></p>
+    </a>
+    </div>
+    <div class="product">
+      <a href="new.htm">
+      <img src="images/totebag.jpg" alt="Tote Bag">
+      <p>Tote Bag<br><strong>Rs. 120.00 INR</strong></p>
+    </a>
+    </div>
+  </section>
 
   <section class="subscribe">
-    <h2>SUBSCRIBE</h2>
-    <p>We send cute emails</p>
-    <input type="email" placeholder="Your email..." />
+    <h2>Join Our Fairy Circle ✨</h2>
+    <p>Get sparkly updates, sweet surprises & magical discounts straight to your inbox!</p>
+    <input type="email" placeholder="Enter your email...">
   </section>
 
- <section class="products">
-   
-    <div class="product-card">
-      <a href="bestsellers.htm">
-      <img src="images/polaroids.jpg" alt="polaroids" />
-      <h4>Custom Polaroids</h4>
-      <span>Rs. 5.00 INR</span>
-    </a>
+  <section class="story">
+    <div class="container">
+      <h2>Our Whimsical Journey</h2>
+      <p>
+        At DewdropDreams Studios, every item is a drop of magic made by hand with love. Our story is woven from fairy lights and soft scents, tiny joys wrapped in pastel palettes.
+        Whether it's a candle to soothe your soul or a handcrafted gift that makes someone smile, our creations tell a heartfelt story — and now, you’re a part of it.
+      </p>
     </div>
-    <div class="product-card">
-      <a href="bestsellers.htm">
-      <img src="images/bookmark blue.jpg" alt="bookmark" />
-      <h4>Bookmarks</h4>
-      <span>Rs. 8.00 INR</span>
-    </a>
-    </div>
-    <div class="product-card">
-      <a href="new.htm">
-      <img src="images/candles.jpg" alt="Scented candles  style="width:200px; height:200px; object-fit:cover;" />
-      <h4>Scented candles</h4>
-      <span>Rs. 70.00 INR</span>
-    </a>
-    </div>
-    <div class="product-card">
-      <a href="Gift.htm">
-        <img src="images/fairylights.jpg" alt="Illustration" />
-        <h4>Fairy Lights Set</h4>
-        <span>Rs. 89.00 INR</span>
-      </a>
-    </div>
-    <div class="product-card">
-      <a href="new.htm">
-      <img src="images/totebag.jpg" alt="totebag" />
-      <h4>Tote Bag</h4>
-      <span>Rs. 120 INR</span>
-    </a>
-    </div>
-  </section>
-
-  <section class="brand-story">
-    <h2>Our Brand Story</h2>
-    <p>
-      At DewdropDreams Studios, we believe that life should be filled with small, beautiful moments. Inspired by nature, handcrafted with love, and delivered with care, our products aim to bring a little joy to your everyday. Whether it's a scented candle that calms your mind or a pastel teacup that adds a touch of charm, every piece tells a story — your story.
-    </p>
+    <img src="images/spr.png" alt="Sparkles">
   </section>
 
   <footer>
-    &copy; 2025 dewdropdreams.studios | Design inspired by Shreedeep Patra
+    © 2025 dewdropdreams.studios | Design inspired by Shreedeep Patra
   </footer>
 </body>
-
 </html>
