@@ -1,326 +1,368 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="icon" href="images/Logo.png" type="image/png" />
-  <title>Sale - Dewdrop Dreams</title>
-  <style>
-    body {
-      margin: 0;
-      width: 100vw;
-      overflow-x: hidden;
-      background-color: #d0e6e6;
-      color: #333;
-    }
-    .navbar {
-  background-color: #ffffff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  font-family: 'Quicksand', sans-serif;
-  flex-wrap: wrap;
-}
-
-.logo {
-  font-family: 'Pacifico', cursive;
-  font-size: 1.2rem;
-  color: #e88aa6;
-}
-
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 20px;
-}
-
-.nav-links li a {
-  text-decoration: none;
-  color: #e88aa6;
-  font-weight: bold;
-}
-
-.hamburger {
-  display: none;
-  font-size: 1.8rem;
-  color: #090909;
-  cursor: pointer;
-  margin-left: auto;
-}
-#menu-toggle {
-  display: none;
-}
-
-/* Mobile Styles */
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-    width: 100%;
-    flex-direction: column;
-    background-color: #fdd0cc;
-    text-align: center;
-    padding: 10px 0;
-  }
-
-  #menu-toggle:checked + .hamburger + .nav-links {
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" href="images/Logo.png" type="image/png" />
+    <title>Gift - Dewdrop Dreams</title>
+    <style>
+      body {
+        margin: 0;
+        width: 100vw;
+        overflow-x: hidden;
+        background: linear-gradient(135deg, #e0f7f9 0%, #fce6f9 100%);
+        color: #333;
+      }
+      .navbar {
+    background-color: #ffffff;
     display: flex;
-  }
-
-  .hamburger {
-    display: block;
-  }
-}
-
-/* Desktop Styles */
-@media (min-width: 769px) {
-  .nav-links {
-    display: flex !important;
-    position: static;
-    flex-direction: row;
-    gap: 20px;
-    padding: 0;
-  }
-
-  .hamburger {
-    display: none;
-  }
-}
-
-* {
-  box-sizing: border-box;
-}
-
-
-    .product-container {
-      display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  box-sizing: border-box;
-    }
-    .product-card {
-      background-color: #fff0f5;
-      padding: 1rem;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-      transition: transform 0.2s;
-    }
-    .product-card:hover {
-      transform: translateY(-5px);
-    }
-    .product-card img {
-      width: 100%;
-      border-radius: 10px;
-    }
-    .product-name {
-      margin: 1rem 0 0.5rem;
-      font-size: 1.1rem;
-      color: #e07d9c;
-    }
-    .product-price {
-      font-size: 1rem;
-      color: #333;
-    }
-    .modal {
-  display: none;
-  position: fixed;
-  z-index: 999;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
-  justify-content: center;   /* Centers the modal horizontally */
-  align-items: center;       /* Centers the modal vertically */
-  padding: 20px;
-  animation: fadeIn 0.3s ease forwards;
-}
-
-.modal.show {
-  display: flex;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.modal-content {
-  background: linear-gradient(135deg, #fdfdfd, #fce9ec);
-  border-radius: 20px;
-  padding: 2rem;
-  max-width: 500px;
-  width: 100%;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-  opacity: 0;
-  animation: slideUp 0.4s ease forwards;
-}
-
-@keyframes slideUp {
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@media (max-width: 480px) {
-  .modal-content {
-    width: 95vw;
-    padding: 1.2rem;
-  }
-}
-
-
-.modal-content img {
-  width: 100%;
-  max-height: 300px;
-  object-fit: cover;
-  aspect-ratio: 4 / 3;
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.modal-content h2 {
-  font-family: 'Quicksand', sans-serif;
-  color: #d46a88;
-  font-size: 1.5rem;
-}
-
-.modal-content p {
-  font-size: 1.1rem;
-  color: #333;
-  margin-bottom: 1rem;
-}
-
-.modal-content input[type="number"] {
-  width: 80px;
-  padding: 8px 12px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 25px;
-  background: #fce9ec;
-  color: #d46a88;
-  text-align: center;
-  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
-  transition: 0.2s ease;
-  outline: none;
-}
-
-.modal-content input[type="number"]::-webkit-inner-spin-button,
-.modal-content input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.modal-content input[type="number"]:focus {
-  background: #fff0f5;
-  box-shadow: 0 0 0 2px #e297af44;
-}
-
-.modal-content button {
-  margin: 0.5rem;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 12px;
-  background: #e297af;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-}
-
-.modal-content button:hover {
-  background: #d46a88;
-  transform: scale(1.05);
-}
-
-.modal-close {
-  position: absolute;
-  top: 12px;
-  right: 20px;
-  font-size: 1.8rem;
-  color: #aaa;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.modal-close:hover {
-  color: #d46a88;
-}
-
-@media (max-width: 768px) {
-  .nav-links {
-    position: absolute;
-    top: 60px;
-    left: 0;
-    right: 0;
-    background-color: #fdd0cc;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    display: none;
-    gap: 15px;
-    padding: 10px 0;
+    padding: 12px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-family: 'Quicksand', sans-serif;
+    flex-wrap: wrap;
   }
-
-  #menu-toggle:checked + .hamburger + .nav-links {
-    display: flex;
+  
+  .logo {
+    font-family: 'Pacifico', cursive;
+    font-size: 1.2rem;
+    color: #e88aa6;
   }
-
-  .hamburger {
-    display: block;
-  }
-}
-
-/* Fix nav for larger screens */
-@media (min-width: 769px) {
+  
   .nav-links {
-    display: flex !important;
-    position: static;
-    flex-direction: row;
+    display: flex;
+    list-style: none;
     gap: 20px;
-    padding: 0;
   }
-
+  
+  .nav-links li a {
+    text-decoration: none;
+    color: #e88aa6;
+    font-weight: bold;
+  }
+  
+  .hamburger {
+    display: none;
+    font-size: 1.8rem;
+    color: #090909;
+    cursor: pointer;
+    margin-left: auto;
+  }
+  
   #menu-toggle {
     display: none;
   }
-
-  .hamburger {
+  
+  /* Mobile Styles */
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      background-color: #fdd0cc;
+      text-align: center;
+      padding: 10px 0;
+    }
+  
+    #menu-toggle:checked + .hamburger + .nav-links {
+      display: flex;
+    }
+  
+    .hamburger {
+      display: block;
+    }
+  }
+  
+  /* Desktop Styles */
+  @media (min-width: 769px) {
+    .nav-links {
+      display: flex !important;
+      position: static;
+      flex-direction: row;
+      gap: 20px;
+      padding: 0;
+    }
+  
+    .hamburger {
+      display: none;
+    }
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  
+      .product-container {
+        display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+      }
+      .product-card {
+        background-color: #fff0f5;
+        padding: 1rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        text-align: center;
+        transition: transform 0.2s;
+      }
+      .product-card:hover {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        background: linear-gradient(145deg, #fff 0%, #fdf5f9 100%);
+      }
+      .product-card img {
+        width: 100%;
+        border-radius: 10px;
+      }
+      .product-name {
+        margin: 1rem 0 0.5rem;
+        font-size: 1.1rem;
+        color: #e07d9c;
+      }
+      .product-price {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #555;
+      }
+      .modal {
     display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;   /* Centers the modal horizontally */
+    align-items: center;       /* Centers the modal vertically */
+    padding: 20px;
+    animation: fadeIn 0.3s ease forwards;
   }
-}
-
-
+  
+  .modal.show {
+    display: flex;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .modal-content {
+    background: linear-gradient(135deg, #fdfdfd, #fce9ec);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    animation: slideUp 0.4s ease forwards;
+  }
+  
+  @keyframes slideUp {
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .modal-content {
+      width: 95vw;
+      padding: 1.2rem;
+    }
+  }
+  
+  
+  .modal-content img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
   .modal-content h2 {
-    font-size: 1.3rem;
+    font-family: 'Quicksand', sans-serif;
+    color: #d46a88;
+    font-size: 1.5rem;
   }
-
-
-.section-title {
-  text-align: center;
-  font-size: 2rem;
-  margin: 30px auto;
-  font-family: 'Quicksand', sans-serif;
-  color: #e297af;
-}
-
-
-
-
-  </style>
-
-</head>
+  
+  .modal-content p {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .modal-content input[type="number"] {
+    width: 80px;
+    padding: 8px 12px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 25px;
+    background: #fce9ec;
+    color: #d46a88;
+    text-align: center;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
+    transition: 0.2s ease;
+    outline: none;
+  }
+  
+  .modal-content input[type="number"]::-webkit-inner-spin-button,
+  .modal-content input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  .modal-content input[type="number"]:focus {
+    background: #fff0f5;
+    box-shadow: 0 0 0 2px #e297af44;
+  }
+  
+  .modal-content button {
+    margin: 0.5rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    background: #e297af;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  
+  .modal-content button:hover {
+    background: #d46a88;
+    transform: scale(1.05);
+  }
+  
+  .modal-close {
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    font-size: 1.8rem;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .modal-close:hover {
+    color: #d46a88;
+  }
+  
+  @media (max-width: 768px) {
+    .nav-links {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background-color: #fdd0cc;
+      flex-direction: column;
+      align-items: center;
+      display: none;
+      gap: 15px;
+      padding: 10px 0;
+    }
+  
+    #menu-toggle:checked + .hamburger + .nav-links {
+      display: flex;
+    }
+  
+    .hamburger {
+      display: block;
+    }
+  }
+  
+  /* Fix nav for larger screens */
+  @media (min-width: 769px) {
+    .nav-links {
+      display: flex !important;
+      position: static;
+      flex-direction: row;
+      gap: 20px;
+      padding: 0;
+    }
+  
+    #menu-toggle {
+      display: none;
+    }
+  
+    .hamburger {
+      display: none;
+    }
+  }
+  
+  
+    .modal-content h2 {
+      font-size: 1.3rem;
+    }
+  
+  
+  .section-title {
+    text-align: center;
+    font-size: 2rem;
+    margin: 30px auto;
+    font-family: 'Quicksand', sans-serif;
+    color: #e297af;
+  }
+  
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #fff0f7;
+    color: #d8578f;
+    padding: 14px 20px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    font-size: 0.9rem;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .view-cart-btn {
+    background-color: #f8a8c3;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .view-cart-btn:hover {
+    background-color: #e88aa6;
+  }
+  
+  
+  
+  
+    </style>
+  </head>
 <body>
   <nav class="navbar">
     <div class="logo">Dewdrop Dreams</div>
@@ -401,90 +443,106 @@
       </div>
       
   </div>
-
-  <!-- Modal Template -->
-<div class="modal" id="productModal">
-  <div class="modal-content">
-    <span class="modal-close" onclick="closeModal()">&times;</span>
-    <img id="modalImage" src="" alt="Product Image">
-    <h2 id="modalName"></h2>
-    <p id="modalPrice"></p>
-    <label for="quantity">Qty:</label>
-    <input type="number" id="quantity" min="1" value="1">
-    <div>
-      <button onclick="addToCart()">Add to Cart</button>
-      <button onclick="buyNow()">Buy Now</button>
-      
-    </div>
+  <div id="toast" class="toast">
+    <span id="toast-message">Item added to cart</span>
+    <a href="cart.htm" class="toast-link">View Cart</a>
   </div>
+  
+
+
+<!-- Modal Template -->
+<div class="modal" id="productModal">
+<div class="modal-content">
+<span class="modal-close" onclick="closeModal()">&times;</span>
+<img id="modalImage" src="" alt="Product Image">
+<h2 id="modalName"></h2>
+<p id="modalPrice"></p>
+<label for="quantity">Qty:</label>
+<input type="number" id="quantity" min="1" value="1">
+<div>
+  <button onclick="addToCart()">Add to Cart</button>
+  <button onclick="buyNow()">Buy Now</button>
+  
+</div>
+</div>
 </div>
 
 <script>
-  const modal = document.getElementById('productModal');
-  const modalImg = document.getElementById('modalImage');
-  const modalName = document.getElementById('modalName');
-  const modalPrice = document.getElementById('modalPrice');
-
-  document.querySelectorAll('.product-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const img = card.querySelector('img').src;
-      const name = card.querySelector('.product-name').textContent;
-      const price = card.querySelector('.product-price').textContent;
-
-      modalImg.src = img;
-      modalName.textContent = name;
-      modalPrice.textContent = price;
-
-      modal.classList.add('show');
-
+    const modal = document.getElementById('productModal');
+    const modalImg = document.getElementById('modalImage');
+    const modalName = document.getElementById('modalName');
+    const modalPrice = document.getElementById('modalPrice');
+  
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const img = card.querySelector('img').src;
+        const name = card.querySelector('.product-name').textContent;
+        const price = card.querySelector('.product-price').textContent;
+  
+        modalImg.src = img;
+        modalName.textContent = name;
+        modalPrice.textContent = price;
+  
+        modal.classList.add('show');
+      });
     });
-  });
+  
+    function closeModal() {
+      modal.classList.remove('show');
+    }
+  
+    function showToast(message) {
+const toast = document.getElementById('toast');
+const toastMsg = document.getElementById('toast-message');
 
-  function closeModal() {
-    modal.classList.remove('show');
+toastMsg.textContent = message;
+toast.classList.add('show');
 
-  }
+setTimeout(() => {
+toast.classList.remove('show');
+}, 3500);
+}
 
-  function addToCart() {
-  const quantity = parseInt(document.getElementById('quantity').value);
-  const name = document.getElementById('modalName').textContent;
-  const price = document.getElementById('modalPrice').textContent.replace('₹', '').trim();
-  const image = document.getElementById('modalImage').src;
-
-  const cartItem = {
-    name: name,
-    price: parseFloat(price),
-    quantity: quantity,
-    image: image
-  };
-
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  cart.push(cartItem);
-  localStorage.setItem('cart', JSON.stringify(cart));
-
-  alert(`Added ${quantity} item(s) to cart.`);
-  closeModal();
-};
-function buyNow() {
-    const quantity = parseInt(document.getElementById('quantity').value);
-    const name = document.getElementById('modalName').textContent;
-    const price = document.getElementById('modalPrice').textContent.replace('₹', '').trim();
-    const image = document.getElementById('modalImage').src;
-
-    const cartItem = {
-      name: name,
-      price: parseFloat(price),
-      quantity: quantity,
-      image: image
-    };
-
-    // Set cart to contain only this item (acts like instant checkout)
-    localStorage.setItem('cart', JSON.stringify([cartItem]));
-
-    // Redirect to cart page
-    window.location.href = 'cart.htm';
-  }
-</script>
+  
+    function addToCart() {
+      const quantity = parseInt(document.getElementById('quantity').value);
+      const name = document.getElementById('modalName').textContent;
+      const price = document.getElementById('modalPrice').textContent.replace('₹', '').trim();
+      const image = document.getElementById('modalImage').src;
+  
+      const cartItem = {
+        name: name,
+        price: parseFloat(price),
+        quantity: quantity,
+        image: image
+      };
+  
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.push(cartItem);
+      localStorage.setItem('cart', JSON.stringify(cart));
+  
+      closeModal();
+      showToast(`Added ${quantity} item(s) to cart`);
+    }
+  
+    function buyNow() {
+      const quantity = parseInt(document.getElementById('quantity').value);
+      const name = document.getElementById('modalName').textContent;
+      const price = document.getElementById('modalPrice').textContent.replace('₹', '').trim();
+      const image = document.getElementById('modalImage').src;
+  
+      const cartItem = {
+        name: name,
+        price: parseFloat(price),
+        quantity: quantity,
+        image: image
+      };
+  
+      localStorage.setItem('cart', JSON.stringify([cartItem]));
+      window.location.href = 'cart.htm';
+    }
+  </script>
+  
 
 </body>
 </html>
