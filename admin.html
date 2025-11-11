@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DewDropDreams Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink: #fbd6dc;
+            --blue: #b6d8d6;
+            --cream: #fffaf7;
+            --soft-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            --primary-font: 'Nunito', sans-serif;
+            --logo-font: 'Nunito', sans-serif;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--primary-font);
+        }
+        body {
+            background-color: var(--cream);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1rem;
+            box-shadow: var(--soft-shadow);
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-family: var(--logo-font);
+            font-size: 1.5rem;
+            color: #e88aa6;
+            flex: 1 1 100%;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        nav a {
+            margin: 0 0.5rem;
+            text-decoration: none;
+            color: #444;
+            transition: 0.3s;
+        }
+        nav a:hover {
+            color: #e88aa6;
+        }
+        
+        /* Admin Panel */
+        .admin-container {
+            padding: 2rem;
+            flex: 1;
+        }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .panel-header h2 {
+            color: #d16b86;
+        }
+        .add-order-btn {
+            background: linear-gradient(135deg, #ffdce3, #fbd6dc);
+            color: #444;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: var(--soft-shadow);
+            transition: 0.3s;
+        }
+        .add-order-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Order list */
+        .order-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .order {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--soft-shadow);
+            padding: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(217,101,131,0.06);
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+        .order-details {
+            margin-top: 0.8rem;
+            display: none;
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.4;
+        }
+        .order.open .order-details {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(-5px);} 
+            to {opacity: 1; transform: translateY(0);} 
+        }
+
+        .btn-group {
+            margin-top: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .btn {
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+        .btn-prepared { background: var(--blue); }
+        .btn-cancel { background: #f9a5b1; }
+        .btn-restore { background: #ffd966; }
+        .btn-remove { background: #ccc; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* Popup */
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.35);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .popup {
+            background: linear-gradient(180deg,#ffffff,#fffaf8);
+            padding: 0; /* Remove default padding from popup */
+            border-radius: 20px;
+            box-shadow: var(--soft-shadow);
+            width: 90%;
+            max-width: 420px;
+            animation: scaleIn 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        @keyframes scaleIn {
+            from {transform: scale(0.9); opacity: 0;} 
+            to {transform: scale(1); opacity: 1;} 
+        }
+
+        .popup-header {
+            background: linear-gradient(90deg,#ffffff);
+            padding: 1rem 1.5rem; /* Increased padding */
+            border-radius: 20px 20px 0 0;
+            position: relative;
+            color: #555;
+            text-align: right;
+        }
+        .close-btn {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            width: auto; /* Removed fixed width */
+            height: auto; /* Removed fixed height */
+            background: none;
+            border: none;
+            color: #555; /* Darker color for X */
+            font-size: 2rem; /* Larger font size for X */
+            cursor: pointer;
+            line-height: 1;
+            padding: 0 0.5rem; /* Added padding */
+        }
+        .close-btn:hover {
+            color: #d16b86; /* Darker hover color */
+        }
+
+        .popup-content {
+            padding: 1rem 1.5rem 1.5rem; /* Added padding to new content wrapper */
+        }
+        
+        .popup-content input {
+            width: 100%;
+            padding: 0.7rem;
+            margin: 0.5rem 0;
+            border-radius: 12px;
+            border: 1px solid #e6d7db;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+            background: #fff;
+        }
+        .popup-content button {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .today-btn {
+            background: var(--blue);
+            color: white;
+        }
+        .today-btn:hover {background: #9ac7c5;}
+        .submit-btn {
+            background: var(--pink);
+            color: #444;
+        }
+        .submit-btn:hover {background: #f9c0cb;}
+
+        /* Sections */
+        .section {
+            margin-top: 2rem;
+        }
+        .section h3 {
+            color: #d16b86;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+        /* Search bar */
+        .search-bar {
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .search-bar input {
+            width: 90%;
+            max-width: 350px;
+            padding: 0.6rem;
+            border-radius: 20px;
+            border: 1px solid #e6d7db;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+            background: #fff;
+        }
+
+        /* Added new input styling to better match the image */
+        .popup-content .input-container {
+            position: relative;
+        }
+
+        .popup-content .input-container input {
+            padding-right: 2.5rem; /* Space for icon/button */
+        }
+        .popup-content .input-container .input-icon {
+            position: absolute;
+            right: 0.7rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* Specifically style the date and button input container */
+        .popup-content .date-input-container {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .popup-content .date-input-container input {
+            flex-grow: 1;
+            margin: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: none;
+        }
+        .popup-content input[type="date"] {
+    width: 100%;
+    padding: 0.7rem;
+    margin: 0.5rem 0;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    font-family: inherit;
+    color: #555;
+}
+
+
+       
+        /* Login overlay */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(249,236,238,0.95));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+        .login-box {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 18px;
+            box-shadow: var(--soft-shadow);
+            width: 95%;
+            max-width: 380px;
+            text-align: center;
+        }
+        .login-box h2 { color: #d16b86; margin-bottom: 0.5rem; font-family: var(--logo-font); }
+        .login-box input { width: 100%; padding: 0.7rem; margin: 0.5rem 0; border-radius: 12px; border: 1px solid #e6d7db; }
+        .login-box button { width: 100%; padding: 0.7rem; margin-top: 0.5rem; border-radius: 12px; border: none; background: linear-gradient(135deg,#ffdce3,#bfe9e6); cursor: pointer; }
+        .login-error { color: #c0392b; font-size: 0.9rem; margin-top: 0.5rem; display: none; }
+    </style>
+</head>
+<body>
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-box">
+            <h2>Admin Login</h2>
+            <p style="color:#666; font-size:0.95rem; margin-bottom:0.5rem">Please enter ID and password to continue</p>
+            <input id="loginId" placeholder="Admin ID or email">
+            <input id="loginPass" type="password" placeholder="Password">
+            <button onclick="login()">Enter</button>
+            <div class="login-error" id="loginError">Invalid credentials. <strong>Please contact the developer for the password changes</strong></div>
+            <div style="margin-top:10px; font-size:0.85rem; color:#666;">
+              Please enter the ID/Email provided by the admin.
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo">dewdropdreams.studios</div>
+        <nav>
+            <a href="index.htm">Home</a>
+            <a href="new.htm">New In</a>
+            <a href="Gift.htm">Shop</a>
+            <a href="aboutus.htm">About</a>
+        </nav>
+        <!-- sign-out button (hidden unless signed in) -->
+        <div id="signedInControls" style="display:none; margin-left:auto; padding-right:1rem;">
+          <span id="signedInEmail" style="font-size:0.95rem; color:#666; margin-right:0.6rem;"></span>
+          <button id="signOutBtn" style="background:transparent; border:none; color:#666; cursor:pointer;">Sign out</button>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <div class="panel-header">
+            <h2>Orders</h2>
+            <button class="add-order-btn" onclick="openPopup()">+ Add Order</button>
+        </div>
+
+        <div class="section">
+            <h3>Pending Orders</h3>
+            <div class="order-list" id="pendingOrders"></div>
+        </div>
+
+        <div class="section">
+            <h3>Completed Orders</h3>
+            <div class="order-list" id="completedOrders"></div>
+        </div>
+
+        <div class="section">
+            <h3>Canceled Orders</h3>
+            <div class="order-list" id="canceledOrders"></div>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup">
+            <div class="popup-header">
+                <button class="close-btn" onclick="closePopup()">×</button>
+            </div>
+            <div class="popup-content">
+                <div class="input-container">
+                    <input type="text" id="customerName" placeholder="Customer Name">
+                    <span class="input-icon" onclick="clearInput('customerName')">×</span>
+                </div>
+                <div class="input-container date-input-container">
+                    <!-- use input[type=date] and open via safe JS function (handles cross-origin frames) -->
+                    <input type="date" id="orderDate" placeholder="mm/dd/yyyy">
+                </div>
+                <button class="today-btn" onclick="setToday()">Today</button>
+                <input type="text" id="product" placeholder="Product">
+                <input type="number" id="price" placeholder="Price">
+                <button class="submit-btn" id="addSubmitBtn">Add Order</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="🔍 Search orders...">
+    </div>
+
+    <!-- Firebase + App logic (module) -->
+    <script type="module">
+        
+    /**************************************************************************
+     * IMPORTANT:
+     * 1) Replace the firebaseConfig object below with your config from
+     *    Firebase Console → Project settings → Your apps → SDK snippet.
+     * 2) If you want robust admin control, create admin custom claims using
+     *    the Admin SDK (example snippet below). Otherwise add admin emails
+     *    into ALLOWED_ADMIN_EMAILS.
+     *
+     * Admin SDK example (run once on a trusted server or locally):
+     *
+     * const admin = require('firebase-admin');
+     * const serviceAccount = require('./serviceAccountKey.json');
+     * admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+     * admin.auth().setCustomUserClaims('USER_UID', { admin: true })
+     *   .then(() => console.log('Claim set'));
+     *
+     **************************************************************************/
+
+    // --- Firebase SDK imports (modular) ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import {
+      getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, getIdTokenResult
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import {
+      getFirestore, collection, addDoc, deleteDoc, updateDoc, doc,
+      onSnapshot, query, orderBy, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+    // ------------- CONFIG — paste your firebaseConfig here --------------
+   const firebaseConfig = {
+  apiKey: "AIzaSyAv_ET6097QjT7psDxqojuf9cXT62Mow4A",
+  authDomain: "dewdropdreams-10e21.firebaseapp.com",
+  projectId: "dewdropdreams-10e21",
+  storageBucket: "dewdropdreams-10e21.firebasestorage.app",
+  messagingSenderId: "630320683563",
+  appId: "1:630320683563:web:df1161bf09bfc21100e86e",
+  measurementId: "G-X9FP3FX5LR"
+};
+
+    // --------------------------------------------------------------------
+
+    // If you currently use short usernames (not emails) to login, map them here:
+    // e.g. 'shreedeep' => 'shreedeep@example.com'
+    'shreedeep' 
+    const USERNAME_TO_EMAIL = {
+    'shreedeep':'shreedeeppatra48@gmail.com',
+    'divyangana' : 'haldardivyangana@gmail.com'
+      // 'shreedeep': 'your-admin-email@example.com',
+      // 'sudiksa': 'other-admin@example.com'
+    };
+
+    // Fallback admin emails (used if custom claims aren't set). Add your admin emails:
+    const ALLOWED_ADMIN_EMAILS = [
+      'shreedeeppatra48@gmail.com',
+      'haldardivyangana@gmail.com'
+      // 'your-admin-email@example.com'
+    ];
+
+    // --- initialize Firebase ---
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const ordersCol = collection(db, 'orders');
+
+    // DOM refs (preserve your original ones)
+    const pendingOrders = document.getElementById('pendingOrders');
+    const completedOrders = document.getElementById('completedOrders');
+    const canceledOrders = document.getElementById('canceledOrders');
+    const loginOverlay = document.getElementById('loginOverlay');
+    const loginError = document.getElementById('loginError');
+    const signedInControls = document.getElementById('signedInControls');
+    const signedInEmail = document.getElementById('signedInEmail');
+    const signOutBtn = document.getElementById('signOutBtn');
+    const addSubmitBtn = document.getElementById('addSubmitBtn');
+
+    // Local state
+    let currentUser = null;
+    let isAdmin = false;
+    let unsubscribeOrders = null;
+
+    // Helper: map username to email if user entered short id
+    function normalizeLoginId(input) {
+      if (!input) return '';
+      input = input.trim();
+      if (input.includes('@')) return input; // likely an email
+      // map known usernames -> email
+      if (USERNAME_TO_EMAIL[input]) return USERNAME_TO_EMAIL[input];
+      // else return as-is (will probably fail)
+      return input;
+    }
+
+    // Show/hide login overlay based on admin status
+    function showLoginOverlay(show) {
+      loginOverlay.style.display = show ? 'flex' : 'none';
+    }
+
+    // Sign-in handler (wired to your existing login button)
+    window.login = async function() {
+      const idInput = document.getElementById('loginId').value.trim();
+      const pass = document.getElementById('loginPass').value.trim();
+      loginError.style.display = 'none';
+
+      if (!idInput || !pass) {
+        loginError.textContent = 'Please enter ID/email and password.';
+        loginError.style.display = 'block';
+        return;
+      }
+
+      const email = normalizeLoginId(idInput);
+
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, pass);
+        // onAuthStateChanged will handle the rest (claims check, UI)
+      } catch (err) {
+        console.error('Sign in failed', err);
+        loginError.textContent = 'Invalid credentials or sign-in error.';
+        loginError.style.display = 'block';
+      }
+    };
+
+    // Sign-out UI
+    signOutBtn.addEventListener('click', async () => {
+      await signOut(auth);
+    });
+
+    // Expose popup controls so existing onclicks still work
+    window.openPopup = function() { document.getElementById('popupOverlay').style.display = 'flex'; };
+    window.closePopup = function() { document.getElementById('popupOverlay').style.display = 'none'; };
+    window.setToday = function() {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth()+1).padStart(2,'0');
+      const dd = String(today.getDate()).padStart(2,'0');
+      document.getElementById('orderDate').value = `${yyyy}-${mm}-${dd}`;
+    };
+    window.clearInput = function(id) { const el = document.getElementById(id); if (!el) return; el.value = ''; el.focus(); };
+
+    // FIRESTORE: render a single order doc to DOM (keeps same layout/structure)
+    function createOrderElementFromDoc(docSnap) {
+      const data = docSnap.data();
+      const id = docSnap.id;
+      const customerName = data.customerName || '';
+      const orderDateVal = data.orderDate;
+      const product = data.product || '';
+      const price = data.price || '';
+      const status = data.status || 'pending';
+
+      const order = document.createElement('div');
+      order.className = 'order';
+      order.dataset.id = id;
+
+      const d = orderDateVal && orderDateVal.toDate ? orderDateVal.toDate() : (orderDateVal ? new Date(orderDateVal) : null);
+      const displayDate = d && !isNaN(d.getTime()) ? `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}/${d.getFullYear()}` : (orderDateVal || '');
+
+      order.innerHTML = `
+        <div class="order-header">
+            <span>${escapeHtml(customerName)} - ₹${escapeHtml(price)}</span>
+        </div>
+        <div class="order-details">
+            <p><strong>Date:</strong> ${escapeHtml(displayDate)}</p>
+            <p><strong>Product:</strong> ${escapeHtml(product)}</p>
+            <div class="btn-group"></div>
+        </div>
+      `;
+
+      // toggle details when clicking outside buttons
+      order.addEventListener('click', function(e) {
+        if (!e.target.classList.contains('btn')) {
+          order.classList.toggle('open');
+        }
+      });
+
+      // populate buttons
+      const details = order.querySelector('.order-details');
+      const btnGroup = details.querySelector('.btn-group');
+
+      if (!status || status === 'pending') {
+        btnGroup.innerHTML = `
+          <button class="btn btn-prepared" data-action="prepared">Prepared</button>
+          <button class="btn btn-cancel" data-action="cancel">Cancel</button>
+        `;
+      } else if (status === 'prepared') {
+        btnGroup.innerHTML = `
+          <button class="btn btn-restore" data-action="restore">Move to Pending</button>
+          <button class="btn btn-remove" data-action="remove">Remove</button>
+        `;
+        details.insertAdjacentHTML('beforeend', `<p><strong>Status:</strong> Prepared</p>`);
+      } else if (status === 'canceled') {
+        btnGroup.innerHTML = `
+          <button class="btn btn-restore" data-action="restore">Move to Pending</button>
+          <button class="btn btn-remove" data-action="remove">Remove</button>
+        `;
+        details.insertAdjacentHTML('beforeend', `<p><strong>Status:</strong> Canceled</p>`);
+      }
+
+      // guard actions: only admins allowed
+      btnGroup.addEventListener('click', async (ev) => {
+        ev.stopPropagation();
+        const action = ev.target.dataset.action;
+        if (!action) return;
+
+        if (!isAdmin) {
+          alert('Only admin users can perform this action.');
+          return;
+        }
+
+        try {
+          if (action === 'prepared') {
+            await updateDoc(doc(db, 'orders', id), { status: 'prepared' });
+          } else if (action === 'cancel') {
+            await updateDoc(doc(db, 'orders', id), { status: 'canceled' });
+          } else if (action === 'restore') {
+            await updateDoc(doc(db, 'orders', id), { status: 'pending' });
+          } else if (action === 'remove') {
+            if (confirm('Remove this order permanently?')) {
+              await deleteDoc(doc(db, 'orders', id));
+            }
+          }
+        } catch (err) {
+          console.error('Action failed', err);
+          alert('Action failed — check console.');
+        }
+      });
+
+      // attach to correct list
+      if (!status || status === 'pending') {
+        pendingOrders.appendChild(order);
+      } else if (status === 'prepared') {
+        completedOrders.appendChild(order);
+      } else if (status === 'canceled') {
+        canceledOrders.appendChild(order);
+      }
+
+      return order;
+    }
+
+    // escape helper (same as original)
+    function escapeHtml(str) {
+      if (str == null) return '';
+      return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+    }
+
+    // realtime listener
+    function startRealtimeListener() {
+      // detach previous listener if any
+      if (unsubscribeOrders) unsubscribeOrders();
+      const q = query(ordersCol, orderBy('createdAt', 'desc'));
+      unsubscribeOrders = onSnapshot(q, (snapshot) => {
+        pendingOrders.innerHTML = '';
+        completedOrders.innerHTML = '';
+        canceledOrders.innerHTML = '';
+        snapshot.forEach(docSnap => createOrderElementFromDoc(docSnap));
+      }, (err) => {
+        console.error('Realtime listener error:', err);
+      });
+    }
+
+    // add order (called by Add button)
+    async function addOrderToFirestore() {
+      const name = document.getElementById('customerName').value.trim();
+      const date = document.getElementById('orderDate').value;
+      const product = document.getElementById('product').value.trim();
+      const price = document.getElementById('price').value.trim();
+
+      if (!name || !date || !product || !price) {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      if (!isAdmin) {
+        alert('Only admin users can add orders.');
+        return;
+      }
+
+      try {
+        await addDoc(ordersCol, {
+          customerName: name,
+          orderDate: new Date(date),
+          product,
+          price,
+          status: 'pending',
+          createdAt: serverTimestamp()
+        });
+        // clearing UI — listener will show it
+        document.getElementById('customerName').value = '';
+        document.getElementById('orderDate').value = '';
+        document.getElementById('product').value = '';
+        document.getElementById('price').value = '';
+        closePopup();
+      } catch (err) {
+        console.error('Add order failed', err);
+        alert('Failed to add order — check console.');
+      }
+    }
+
+    // Expose functions to keep your inline onclicks working (they will route to Firestore)
+    window.addOrder = function() {
+      addOrderToFirestore();
+    };
+    window.markPrepared = function(btn) {
+      const order = btn.closest('.order');
+      if (!order) return;
+      const id = order.dataset.id;
+      if (isAdmin) updateDoc(doc(db, 'orders', id), { status: 'prepared' });
+      else alert('Only admin users can perform this action.');
+    };
+    window.cancelOrder = function(btn) {
+      const order = btn.closest('.order');
+      if (!order) return;
+      const id = order.dataset.id;
+      if (isAdmin) updateDoc(doc(db, 'orders', id), { status: 'canceled' });
+      else alert('Only admin users can perform this action.');
+    };
+    window.restoreOrder = function(btn) {
+      const order = btn.closest('.order');
+      if (!order) return;
+      const id = order.dataset.id;
+      if (isAdmin) updateDoc(doc(db, 'orders', id), { status: 'pending' });
+      else alert('Only admin users can perform this action.');
+    };
+    window.restoreFromCanceled = function(btn) { window.restoreOrder(btn); };
+    window.removeOrder = function(btn) {
+      const order = btn.closest('.order');
+      if (!order) return;
+      const id = order.dataset.id;
+      if (!isAdmin) { alert('Only admin users can perform this action.'); return; }
+      if (confirm('Remove this order permanently?')) deleteDoc(doc(db, 'orders', id)).catch(err => { console.error(err); alert('Delete failed'); });
+    };
+
+    // wire popup submit button (keeps same id)
+    addSubmitBtn.addEventListener('click', () => addOrderToFirestore());
+
+    // auth state watcher: check custom claims for admin or fallback to ALLOWED_ADMIN_EMAILS
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      isAdmin = false;
+
+      if (!user) {
+        // not signed in
+        signedInControls.style.display = 'none';
+        signedInEmail.textContent = '';
+        showLoginOverlay(true);
+        // stop listening to Firestore to avoid exposing data to non-signed in users
+        if (unsubscribeOrders) { unsubscribeOrders(); unsubscribeOrders = null; }
+        return;
+      }
+
+      // signed in — check custom claims
+      try {
+        const idTokenResult = await getIdTokenResult(user, /* forceRefresh */ true);
+        const claims = idTokenResult.claims || {};
+        if (claims.admin === true) {
+          isAdmin = true;
+        } else if (ALLOWED_ADMIN_EMAILS.length && ALLOWED_ADMIN_EMAILS.includes(user.email)) {
+          // fallback if custom claim not set
+          isAdmin = true;
+        } else {
+          isAdmin = false;
+        }
+      } catch (err) {
+        console.error('Failed to get token/result', err);
+        // fallback to email list
+        if (ALLOWED_ADMIN_EMAILS.includes(user.email)) isAdmin = true;
+      }
+
+      // show/hide UI
+      if (isAdmin) {
+        showLoginOverlay(false);
+        signedInControls.style.display = 'flex';
+        signedInEmail.textContent = user.email || '';
+        // start realtime listener (admins can view & edit)
+        startRealtimeListener();
+      } else {
+        // not admin — sign out immediately and show message
+        alert('You signed in, but your account is not an admin. Contact the developer.');
+        await signOut(auth);
+      }
+    });
+
+    // Optional: search filter (same as before)
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const q = this.value.toLowerCase().trim();
+        const lists = [pendingOrders, completedOrders, canceledOrders];
+        lists.forEach(list => {
+            Array.from(list.children).forEach(order => {
+                const text = order.textContent.toLowerCase();
+                order.style.display = text.includes(q) ? '' : 'none';
+            });
+        });
+    });
+
+    // Keep existing local helper functions:
+    function openDatePicker(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      try {
+          if (typeof el.showPicker === 'function') {
+              el.showPicker();
+          } else {
+              el.focus();
+              el.click();
+          }
+      } catch (err) {
+          console.warn('showPicker unavailable or blocked (falling back):', err);
+          el.focus();
+      }
+    }
+    function setToday() {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      document.getElementById('orderDate').value = `${yyyy}-${mm}-${dd}`;
+    }
+    // (these are exposed earlier too)
+    // createSampleOrders is no longer used (replaced by Firestore)
+    </script>
+</body>
+</html>
