@@ -143,12 +143,35 @@
             cursor: pointer;
             font-size: 0.8rem;
             transition: 0.3s;
+            position: relative; /* for spinner */
         }
         .btn-prepared { background: var(--blue); }
         .btn-cancel { background: #f9a5b1; }
         .btn-restore { background: #ffd966; }
         .btn-remove { background: #ccc; }
         .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* Loading spinner inside buttons */
+        .btn.loading {
+            color: transparent !important;
+            pointer-events: none;
+        }
+        .btn.loading::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 14px;
+            height: 14px;
+            margin: -7px 0 0 -7px;
+            border-radius: 50%;
+            border: 2px solid rgba(0,0,0,0.12);
+            border-top-color: rgba(0,0,0,0.6);
+            animation: spin 0.75s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
         /* Popup */
         .popup-overlay {
@@ -225,6 +248,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: 0.3s;
+            position: relative; /* for spinner if needed */
         }
         .today-btn {
             background: var(--blue);
@@ -336,6 +360,25 @@
         .login-box input { width: 100%; padding: 0.7rem; margin: 0.5rem 0; border-radius: 12px; border: 1px solid #e6d7db; }
         .login-box button { width: 100%; padding: 0.7rem; margin-top: 0.5rem; border-radius: 12px; border: none; background: linear-gradient(135deg,#ffdce3,#bfe9e6); cursor: pointer; }
         .login-error { color: #c0392b; font-size: 0.9rem; margin-top: 0.5rem; display: none; }
+
+        /* login button loading spinner (small) */
+        #loginBtn.loading {
+            color: transparent !important;
+            pointer-events: none;
+        }
+        #loginBtn.loading::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 14px;
+            height: 14px;
+            margin: -7px 0 0 -7px;
+            border-radius: 50%;
+            border: 2px solid rgba(0,0,0,0.12);
+            border-top-color: rgba(0,0,0,0.6);
+            animation: spin 0.75s linear infinite;
+        }
     </style>
 </head>
 <body>
@@ -345,7 +388,8 @@
             <p style="color:#666; font-size:0.95rem; margin-bottom:0.5rem">Please enter ID and password to continue</p>
             <input id="loginId" placeholder="Admin ID or email">
             <input id="loginPass" type="password" placeholder="Password">
-            <button onclick="login()">Enter</button>
+            <!-- added id for spinner control; visual unchanged -->
+            <button id="loginBtn" onclick="login()">Enter</button>
             <div class="login-error" id="loginError">Invalid credentials. <strong>Please contact the developer for the password changes</strong></div>
             <div style="margin-top:10px; font-size:0.85rem; color:#666;">
               Please enter the ID/Email provided by the admin.
@@ -440,7 +484,8 @@
     // --- Firebase SDK imports (modular) ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
     import {
-      getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, getIdTokenResult
+      getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, getIdTokenResult,
+      setPersistence, browserLocalPersistence
     } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
     import {
       getFirestore, collection, addDoc, deleteDoc, updateDoc, doc,
@@ -461,25 +506,28 @@
     // --------------------------------------------------------------------
 
     // If you currently use short usernames (not emails) to login, map them here:
-    // e.g. 'shreedeep' => 'shreedeep@example.com'
-    'shreedeep' 
+    // e.g. 'shreedeep' => 'shreedeeppatra48@gmail.com'
     const USERNAME_TO_EMAIL = {
     'shreedeep':'shreedeeppatra48@gmail.com',
     'divyangana' : 'haldardivyangana@gmail.com'
-      // 'shreedeep': 'your-admin-email@example.com',
-      // 'sudiksa': 'other-admin@example.com'
     };
 
     // Fallback admin emails (used if custom claims aren't set). Add your admin emails:
     const ALLOWED_ADMIN_EMAILS = [
       'shreedeeppatra48@gmail.com',
       'haldardivyangana@gmail.com'
-      // 'your-admin-email@example.com'
     ];
 
     // --- initialize Firebase ---
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+
+    // make auth persistent in browser (fixes frequent logout)
+    // setPersistence returns a promise; we set it once here.
+    setPersistence(auth, browserLocalPersistence).catch(err => {
+      console.warn('Could not set persistence:', err);
+    });
+
     const db = getFirestore(app);
     const ordersCol = collection(db, 'orders');
 
@@ -493,6 +541,7 @@
     const signedInEmail = document.getElementById('signedInEmail');
     const signOutBtn = document.getElementById('signOutBtn');
     const addSubmitBtn = document.getElementById('addSubmitBtn');
+    const loginBtn = document.getElementById('loginBtn');
 
     // Local state
     let currentUser = null;
@@ -529,13 +578,19 @@
 
       const email = normalizeLoginId(idInput);
 
+      // show spinner on login button
+      if (loginBtn) loginBtn.classList.add('loading');
+
       try {
-        const cred = await signInWithEmailAndPassword(auth, email, pass);
+        // sign-in (persistence already set above)
+        await signInWithEmailAndPassword(auth, email, pass);
         // onAuthStateChanged will handle the rest (claims check, UI)
       } catch (err) {
         console.error('Sign in failed', err);
         loginError.textContent = 'Invalid credentials or sign-in error.';
         loginError.style.display = 'block';
+      } finally {
+        if (loginBtn) loginBtn.classList.remove('loading');
       }
     };
 
@@ -620,7 +675,12 @@
         const action = ev.target.dataset.action;
         if (!action) return;
 
+        // show loading on clicked button
+        const clicked = ev.target;
+        clicked.classList.add('loading');
+
         if (!isAdmin) {
+          clicked.classList.remove('loading');
           alert('Only admin users can perform this action.');
           return;
         }
@@ -640,6 +700,9 @@
         } catch (err) {
           console.error('Action failed', err);
           alert('Action failed — check console.');
+        } finally {
+          // remove loading class
+          clicked.classList.remove('loading');
         }
       });
 
@@ -698,6 +761,9 @@
         return;
       }
 
+      // show loading on submit button
+      addSubmitBtn.classList.add('loading');
+
       try {
         await addDoc(ordersCol, {
           customerName: name,
@@ -716,6 +782,8 @@
       } catch (err) {
         console.error('Add order failed', err);
         alert('Failed to add order — check console.');
+      } finally {
+        addSubmitBtn.classList.remove('loading');
       }
     }
 
@@ -723,34 +791,82 @@
     window.addOrder = function() {
       addOrderToFirestore();
     };
-    window.markPrepared = function(btn) {
+    window.markPrepared = async function(btn) {
       const order = btn.closest('.order');
       if (!order) return;
       const id = order.dataset.id;
-      if (isAdmin) updateDoc(doc(db, 'orders', id), { status: 'prepared' });
-      else alert('Only admin users can perform this action.');
+      btn.classList.add('loading');
+      if (isAdmin) {
+        try {
+          await updateDoc(doc(db, 'orders', id), { status: 'prepared' });
+        } catch (err) {
+          console.error(err);
+          alert('Update failed');
+        } finally {
+          btn.classList.remove('loading');
+        }
+      } else {
+        btn.classList.remove('loading');
+        alert('Only admin users can perform this action.');
+      }
     };
-    window.cancelOrder = function(btn) {
+    window.cancelOrder = async function(btn) {
       const order = btn.closest('.order');
       if (!order) return;
       const id = order.dataset.id;
-      if (isAdmin) updateDoc(doc(db, 'orders', id), { status: 'canceled' });
-      else alert('Only admin users can perform this action.');
+      btn.classList.add('loading');
+      if (isAdmin) {
+        try {
+          await updateDoc(doc(db, 'orders', id), { status: 'canceled' });
+        } catch (err) {
+          console.error(err);
+          alert('Update failed');
+        } finally {
+          btn.classList.remove('loading');
+        }
+      } else {
+        btn.classList.remove('loading');
+        alert('Only admin users can perform this action.');
+      }
     };
-    window.restoreOrder = function(btn) {
+    window.restoreOrder = async function(btn) {
       const order = btn.closest('.order');
       if (!order) return;
       const id = order.dataset.id;
-      if (isAdmin) updateDoc(doc(db, 'orders', id), { status: 'pending' });
-      else alert('Only admin users can perform this action.');
+      btn.classList.add('loading');
+      if (isAdmin) {
+        try {
+          await updateDoc(doc(db, 'orders', id), { status: 'pending' });
+        } catch (err) {
+          console.error(err);
+          alert('Update failed');
+        } finally {
+          btn.classList.remove('loading');
+        }
+      } else {
+        btn.classList.remove('loading');
+        alert('Only admin users can perform this action.');
+      }
     };
     window.restoreFromCanceled = function(btn) { window.restoreOrder(btn); };
-    window.removeOrder = function(btn) {
+    window.removeOrder = async function(btn) {
       const order = btn.closest('.order');
       if (!order) return;
       const id = order.dataset.id;
-      if (!isAdmin) { alert('Only admin users can perform this action.'); return; }
-      if (confirm('Remove this order permanently?')) deleteDoc(doc(db, 'orders', id)).catch(err => { console.error(err); alert('Delete failed'); });
+      btn.classList.add('loading');
+      if (!isAdmin) { btn.classList.remove('loading'); alert('Only admin users can perform this action.'); return; }
+      if (confirm('Remove this order permanently?')) {
+        try {
+          await deleteDoc(doc(db, 'orders', id));
+        } catch (err) {
+          console.error(err);
+          alert('Delete failed');
+        } finally {
+          btn.classList.remove('loading');
+        }
+      } else {
+        btn.classList.remove('loading');
+      }
     };
 
     // wire popup submit button (keeps same id)
@@ -773,7 +889,8 @@
 
       // signed in — check custom claims
       try {
-        const idTokenResult = await getIdTokenResult(user, /* forceRefresh */ true);
+        // removed forced token refresh (was causing instability)
+        const idTokenResult = await getIdTokenResult(user);
         const claims = idTokenResult.claims || {};
         if (claims.admin === true) {
           isAdmin = true;
